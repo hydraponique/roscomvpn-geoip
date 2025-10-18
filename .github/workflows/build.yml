@@ -82,6 +82,6 @@ jobs:
         with:
           tag_name: ${{ env.DAILY_TAG }}
           name: ${{ env.DAILY_TAG }}
-          prerelease: true
+          prerelease: false
           draft: false
           files: "publish/*"
