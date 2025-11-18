@@ -39,22 +39,6 @@
         "name": "direct",
         "uri": "./changes/direct.txt"
       }
-    },
-    {
-      "type": "text",
-      "action": "add", 
-      "args": {
-        "name": "proxy",
-        "uri": "./changes/proxy.txt"
-      }
-    },
-    {
-      "type": "text",
-      "action": "add", 
-      "args": {
-        "name": "proxy",
-        "uri": "https://raw.githubusercontent.com/fatyzzz/ipset-discord/refs/heads/main/discord.txt"
-      }
     }
   ],
   "output": [
