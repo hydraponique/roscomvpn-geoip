@@ -56,7 +56,6 @@ jobs:
           mkdir publish
           cp output/dat/*.dat publish
           cp output/text/direct.txt publish
-          cp output/text/proxy.txt publish
           
       - name: Git push assets to "release" branch
         run: |
