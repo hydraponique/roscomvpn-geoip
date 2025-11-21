@@ -1,12 +1,12 @@
 FROM golang:1.24-alpine
 
-RUN apk add --no-cache git curl unzip python3
+RUN apk add --no-cache git curl unzip python3 py3-pip
 
 RUN git clone https://github.com/v2fly/geoip.git /geoip
 
-RUN curl -o /geoip/ipsum.lst https://github.com/1andrevich/Re-filter-lists/blob/main/ipsum.lst
+RUN curl -L -o /geoip/ipsum.lst https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/ipsum.lst
 
-RUN curl -o /geoip/merged.sum https://github.com/PentiumB/CDN-RuleSet/blob/main/source/merged.sum
+RUN curl -L -o /geoip/merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/main/source/merged.sum
 
 COPY . /geoip/
 
@@ -25,4 +25,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./ipsum.lst,./merged.sum --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./ipsum.lst,./merged.sum --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
