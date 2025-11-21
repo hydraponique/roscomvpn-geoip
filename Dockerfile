@@ -25,4 +25,8 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python ipset_ops.py --mode diff --A /output/text/prepare.txt --B ipsum.lst,merged.sum --out /output/text/final.txt && ./geoip -c config-3-cut.json"]
+RUN ./geoip -c config-1-init.json && \
+    ./geoip -c config-2-sum.json && \
+    python3 ipset_ops.py --mode diff --A /output/text/prepare.txt --B ipsum.lst,merged.sum --out /output/text/final.txt
+
+CMD ["sh","-c","./geoip -c config-3-cut.json"]
