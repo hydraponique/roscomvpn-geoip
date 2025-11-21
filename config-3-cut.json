@@ -5,23 +5,7 @@
       "action": "add", 
       "args": {
         "name": "direct",
-        "uri": "./output/text/ru.txt"
-      }
-    },
-    {
-      "type": "text",
-      "action": "add", 
-      "args": {
-        "name": "direct",
-        "uri": "./output/text/by.txt"
-      }
-    },
-    {
-      "type": "text",
-      "action": "add", 
-      "args": {
-        "name": "direct",
-        "uri": "./output/text/kz.txt"
+        "uri": "./output/text/final.txt"
       }
     },
     {
@@ -30,14 +14,6 @@
       "args": {
         "name": "direct",
         "uri": "./output/text/private.txt"
-      }
-    },
-    {
-      "type": "text",
-      "action": "add", 
-      "args": {
-        "name": "direct",
-        "uri": "./changes/direct.txt"
       }
     }
   ],

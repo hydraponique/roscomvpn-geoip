@@ -1,16 +1,14 @@
 FROM golang:1.24-alpine
 
-RUN apk add --no-cache git curl unzip
+RUN apk add --no-cache git curl unzip python3
 
 RUN git clone https://github.com/v2fly/geoip.git /geoip
 
-COPY config-preparing.json /geoip/config-preparing.json
+RUN curl -o /geoip/ipsum.lst https://github.com/1andrevich/Re-filter-lists/blob/main/ipsum.lst
 
-COPY config-finalise.json /geoip/config-finalise.json
+RUN curl -o /geoip/merged.sum https://github.com/PentiumB/CDN-RuleSet/blob/main/source/merged.sum
 
-RUN mkdir -p /geoip/changes
-
-COPY changes/ /geoip/changes/
+COPY . /geoip/
 
 RUN mkdir -p /geoip/geolite2
 
@@ -27,4 +25,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-preparing.json && ./geoip -c config-finalise.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A /output/text/prepare.txt --B ipsum.lst,merged.sum --out /output/text/final.txt && ./geoip -c config-3-cut.json"]
