@@ -6,7 +6,9 @@ RUN git clone https://github.com/v2fly/geoip.git /geoip
 
 RUN curl -L -o /geoip/ipsum.lst https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/ipsum.lst
 
-RUN curl -L -o /geoip/merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/main/source/merged.sum
+RUN curl -L -o /geoip/cdn.lst https://raw.githubusercontent.com/hydraponique/cdn-ip-database/refs/heads/main/data/cdn.lst
+
+RUN curl -L -o /geoip/merged.sum https://raw.githubusercontent.com/hydraponique/CDN-RuleSet/main/source/merged.sum
 
 COPY . /geoip/
 
@@ -25,4 +27,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./ipsum.lst,./merged.sum --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./ipsum.lst,./cdn.lst,./merged.sum --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
