@@ -29,7 +29,7 @@
       "action": "add", 
       "args": {
         "name": "prepare",
-        "uri": "./CUSTOM-LIST.txt"
+        "uri": "./CUSTOM-LIST-ADD.txt"
       }
     }
   ],
