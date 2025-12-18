@@ -27,4 +27,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-prepare.json && python3 ipset_ops.py --mode intersect --set ./output/text/directprepare.txt,./output/text/proxyprepare.txt --out ./output/text/proxyfinalise.txt && ./geoip -c config-3-finalise.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-prepare.json && python3 ipset_ops.py --mode intersect --set ./output/text/directprepare.txt --set ./output/text/proxyprepare.txt --out ./output/text/proxyfinalise.txt && ./geoip -c config-3-finalise.json"]
