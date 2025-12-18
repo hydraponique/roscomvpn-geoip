@@ -4,11 +4,20 @@ RUN apk add --no-cache git curl unzip python3 py3-pip
 
 RUN git clone https://github.com/v2fly/geoip.git /geoip
 
-RUN curl -L -o /geoip/antifilter.txt https://antifilter.download/list/allyouneed.lst
+RUN curl -L -o /geoip/antifilterdownload.txt https://antifilter.download/list/allyouneed.lst
+
+RUN curl -L -o /geoip/antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
 
 RUN curl -L -o /geoip/refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
 
 RUN curl -L -o /geoip/refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
+
+RUN curl -L -o /geoip/antifilternetworksum.txt https://antifilter.network/download/ipsum.lst
+
+RUN curl -L -o /geoip/antifilternetworksubnet.txt https://antifilter.network/download/subnet.lst
+
+RUN curl -L -o /geoip/antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
+
 
 COPY . /geoip/
 
