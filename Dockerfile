@@ -1,14 +1,14 @@
 FROM golang:1.24-alpine
 
-RUN apk add --no-cache git curl unzip python3 py3-pip
+RUN apk add --no-cache git curl unzip
 
 RUN git clone https://github.com/v2fly/geoip.git /geoip
 
-RUN curl -L -o /geoip/ipsum.lst https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
+RUN curl -L -o /geoip/antifilter.txt https://antifilter.download/list/allyouneed.lst
 
-RUN curl -L -o /geoip/cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
+RUN curl -L -o /geoip/refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
 
-RUN curl -L -o /geoip/merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
+RUN curl -L -o /geoip/refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
 
 COPY . /geoip/
 
@@ -27,4 +27,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./ipsum.lst,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-finalise.json"]

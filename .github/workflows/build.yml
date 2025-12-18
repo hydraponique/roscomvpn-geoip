@@ -54,9 +54,10 @@ jobs:
       - name: Move files to publish directory
         run: |
           mkdir publish
-          cp output/dat/*.dat publish
+          cp output/dat/geoip.dat publish
           cp output/text/direct.txt publish
-          
+          cp output/text/proxy.txt publish
+
       - name: Git push assets to "release" branch
         run: |
           cd publish || exit 1
@@ -68,7 +69,7 @@ jobs:
           git commit -m "${{ env.DAILY_TAG }}"
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin release
-          
+
       - name: Purge jsdelivr CDN
         run: |
           cd publish || exit 1
