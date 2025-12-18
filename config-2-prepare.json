@@ -4,7 +4,7 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "direct",
+        "name": "directprepare",
         "uri": "./output/text/ru.txt"
       }
     },
@@ -12,7 +12,7 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "direct",
+        "name": "directprepare",
         "uri": "./output/text/by.txt"
       }
     },
@@ -20,7 +20,7 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "direct",
+        "name": "directprepare",
         "uri": "./output/text/kz.txt"
       }
     },
@@ -28,7 +28,7 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "direct",
+        "name": "directprepare",
         "uri": "./CUSTOM-LIST-ADD.txt"
       }
     },
@@ -36,15 +36,7 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "direct",
-        "uri": "./output/text/private.txt"
-      }
-    },
-    {
-      "type": "text",
-      "action": "add",
-      "args": {
-        "name": "proxy",
+        "name": "proxyprepare",
         "uri": "./antifilter.txt"
       }
     },
@@ -52,7 +44,7 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "proxy",
+        "name": "proxyprepare",
         "uri": "./refilter.txt"
       }
     },
@@ -60,19 +52,12 @@
       "type": "text",
       "action": "add",
       "args": {
-        "name": "proxy",
+        "name": "proxyprepare",
         "uri": "./refiltercommunity.txt"
       }
     }
   ],
   "output": [
-    {
-      "type": "v2rayGeoIPDat",
-      "action": "output",
-      "args": {
-        "outputName": "geoip.dat"
-      }
-    },
     {
       "type": "text",
       "action": "output"

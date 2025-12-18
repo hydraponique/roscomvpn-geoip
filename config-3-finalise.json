@@ -1,0 +1,41 @@
+{
+  "input": [
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./output/text/directprepare.txt"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./output/text/private.txt"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "proxy",
+        "uri": "./output/text/proxyfinalise.txt"
+      }
+    }
+  ],
+  "output": [
+    {
+      "type": "v2rayGeoIPDat",
+      "action": "output",
+      "args": {
+        "outputName": "geoip.dat"
+      }
+    },
+    {
+      "type": "text",
+      "action": "output"
+    }
+  ]
+}
