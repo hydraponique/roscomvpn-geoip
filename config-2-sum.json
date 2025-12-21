@@ -1,0 +1,34 @@
+{
+  "input": [
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "prepare",
+        "uri": "./output/text/ru.txt"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "prepare",
+        "uri": "./output/text/by.txt"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "prepare",
+        "uri": "./CUSTOM-LIST-ADD.txt"
+      }
+    }
+  ],
+  "output": [
+    {
+      "type": "text",
+      "action": "output"
+    }
+  ]
+}

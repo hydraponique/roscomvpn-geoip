@@ -38,9 +38,8 @@ jobs:
               sha: context.sha
             })
 
-      - name: Download MaxMind GeoLite2
-        run: |
-          curl -L "https://dl.netsyms.net/dbs/geolite2/GeoLite2-Country-CSV.zip" -o GeoLite2-Country-CSV.zip
+      - name: Download GeoLite2
+        run: curl -L "https://dl.netsyms.net/dbs/geolite2/GeoLite2-Country-CSV.zip" -o GeoLite2-Country-CSV.zip
 
       - name: Build Docker image
         run: docker build -t geoip-generator .
@@ -54,16 +53,15 @@ jobs:
       - name: Move files to publish directory
         run: |
           mkdir publish
-          cp output/dat/geoip.dat publish
+          cp output/dat/*.dat publish
           cp output/text/direct.txt publish
-          cp output/text/proxy.txt publish
 
       - name: Git push assets to "release" branch
         run: |
           cd publish || exit 1
           git init
-          git config --local user.name "hydraponique"
-          git config --local user.email "hydraponique@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b release
           git add -A
           git commit -m "${{ env.DAILY_TAG }}"

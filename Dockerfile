@@ -18,6 +18,9 @@ RUN curl -L -o /geoip/antifilternetworksubnet.txt https://antifilter.network/dow
 
 RUN curl -L -o /geoip/antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
 
+RUN curl -L -o /geoip/cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
+
+RUN curl -L -o /geoip/merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
 
 COPY . /geoip/
 
@@ -36,4 +39,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-prepare.json && python3 ipset_ops.py --mode intersect --set ./output/text/directprepare.txt --set ./output/text/proxyprepare.txt --out ./output/text/proxyfinalise.txt && ./geoip -c config-3-finalise.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./antifilterdownload.txt,./refilter.txt,./antifilternetworksum.txt,./antifilternetworksubnet.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]

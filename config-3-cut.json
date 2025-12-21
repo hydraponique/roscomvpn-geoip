@@ -5,7 +5,7 @@
       "action": "add",
       "args": {
         "name": "direct",
-        "uri": "./output/text/directprepare.txt"
+        "uri": "./output/text/final.txt"
       }
     },
     {
@@ -14,14 +14,6 @@
       "args": {
         "name": "direct",
         "uri": "./output/text/private.txt"
-      }
-    },
-    {
-      "type": "text",
-      "action": "add",
-      "args": {
-        "name": "proxy",
-        "uri": "./output/text/proxyfinalise.txt"
       }
     }
   ],
