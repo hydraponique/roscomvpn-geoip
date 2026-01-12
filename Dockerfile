@@ -4,7 +4,7 @@ RUN apk add --no-cache git curl unzip python3 py3-pip
 
 RUN git clone https://github.com/v2fly/geoip.git /geoip
 
-RUN curl -L -o /geoip/antifilterdownload.txt https://antifilter.download/list/allyouneed.lst
+RUN curl -L -o /geoip/refilterbeta.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/beta/ipsum.lst
 
 RUN curl -L -o /geoip/antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
 
@@ -39,4 +39,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./antifilterdownload.txt,./refilter.txt,./antifilternetworksum.txt,./antifilternetworksubnet.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./refilterbeta.txt,./refilter.txt,./antifilternetworksum.txt,./antifilternetworksubnet.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
