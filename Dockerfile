@@ -12,9 +12,7 @@ RUN curl -L -o /geoip/refilter.txt https://raw.githubusercontent.com/1andrevich/
 
 RUN curl -L -o /geoip/refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
 
-RUN curl -L -o /geoip/antifilternetworksum.txt https://antifilter.network/download/ipsum.lst
-
-RUN curl -L -o /geoip/antifilternetworksubnet.txt https://antifilter.network/download/subnet.lst
+RUN curl -L -o /geoip/antifilternetwork.txt https://antifilter.network/download/ip.lst
 
 RUN curl -L -o /geoip/antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
 
@@ -39,4 +37,4 @@ RUN go mod download
 
 RUN go build -o geoip
 
-CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./refilterbeta.txt,./refilter.txt,./antifilternetworksum.txt,./antifilternetworksubnet.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
+CMD ["sh","-c","./geoip -c config-1-init.json && ./geoip -c config-2-sum.json && python3 ipset_ops.py --mode diff --A ./output/text/prepare.txt --B ./refilterbeta.txt,./refilter.txt,./antifilternetwork.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt --out ./output/text/final.txt && ./geoip -c config-3-cut.json"]
