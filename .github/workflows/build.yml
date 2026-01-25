@@ -100,24 +100,29 @@ jobs:
         run: |
           set -euo pipefail
 
-          rm -rf output
-          mkdir -p output/dat output/text
+          rm -rf tmp output
+          mkdir -p tmp/text output/dat output/text
 
           ./geoip -c config-1-init.json
 
-          rm -f ./output/text/prepare.txt
-          : > ./output/text/prepare.txt
-          for f in ./output/text/ru.txt ./output/text/by.txt ./CUSTOM-LIST-ADD.txt; do
+          mv output/text/* tmp/text/
+
+          rm -f ./tmp/text/prepare.txt
+          : > ./tmp/text/prepare.txt
+          for f in ./tmp/text/ru.txt ./tmp/text/by.txt ./CUSTOM-LIST-ADD.txt; do
             if [ -f "$f" ]; then
-              cat "$f" >> ./output/text/prepare.txt
-              printf '\n' >> ./output/text/prepare.txt
+              cat "$f" >> ./tmp/text/prepare.txt
+              printf '\n' >> ./tmp/text/prepare.txt
             fi
           done
 
           python3 ipset_ops.py --mode diff \
-            --A ./output/text/prepare.txt \
+            --A ./tmp/text/prepare.txt \
             --B ./refilterbeta.txt,./refilter.txt,./antifilternetwork.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt \
-            --out ./output/text/final.txt
+            --out ./tmp/text/final.txt
+
+          cp ./tmp/text/final.txt ./output/text/
+          cp ./tmp/text/private.txt ./output/text/
 
           ./geoip -c config-3-cut.json
 
