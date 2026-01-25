@@ -124,7 +124,7 @@ jobs:
             --B ./refilterbeta.txt,./refilter.txt,./antifilternetwork.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt \
             --out ./tmp/text/final.txt
 
-          ./geoip -c config-3-cut.json
+          ./geoip -c config-2-cut.json
 
           ls -l output/dat/*.dat
 
