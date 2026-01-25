@@ -1,6 +1,0 @@
-geoip/
-Dockerfile
-.dockerignore
-.git
-.gitignore
-*.md

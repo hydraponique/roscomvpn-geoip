@@ -1,62 +1,193 @@
 name: Build geoip
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 4"
   push:
     branches:
+      - test
       - master
     paths-ignore:
       - "README.md"
+      - ".gitignore"
+      - "LICENSE"
+
+permissions:
+  contents: write
 
 jobs:
-  new-tag:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Checkout v2fly/geoip
+        uses: actions/checkout@v6
+        with:
+          repository: v2fly/geoip
+          path: geoip
+          fetch-depth: 1
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: geoip/go.mod
+          cache: true
+          cache-dependency-path: geoip/go.sum
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Overlay custom files over geoip
+        run: |
+          set -euo pipefail
+          cp -f ./*.json geoip/ 2>/dev/null || true
+          cp -f ./*.txt  geoip/ 2>/dev/null || true
+          cp -f ./*.py   geoip/ 2>/dev/null || true
 
       - name: Set tag
+        if: github.ref_name == 'master'
         run: |
+          set -euo pipefail
           DAILY_TAG=$(date +%Y%m%d%H%M)
           echo "DAILY_TAG=$DAILY_TAG" >> $GITHUB_ENV
 
       - name: Create Tag
-        uses: actions/github-script@v7
+        if: github.ref_name == 'master'
+        uses: actions/github-script@v8
         with:
           script: |
-            const {DAILY_TAG} = process.env
-            github.rest.git.createRef({
+            const { DAILY_TAG } = process.env
+            await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${DAILY_TAG}`,
               sha: context.sha
             })
 
-      - name: Download GeoLite2
-        run: curl -L "https://dl.netsyms.net/dbs/geolite2/GeoLite2-Country-CSV.zip" -o GeoLite2-Country-CSV.zip
-
-      - name: Build Docker image
-        run: docker build -t geoip-generator .
-
-      - name: Run Docker container
+      - name: Download inputs (IP lists + GeoLite2)
+        working-directory: geoip
         run: |
-          mkdir -p output/dat
-          mkdir -p output/text
-          docker run --rm -v ${{ github.workspace }}/output:/geoip/output geoip-generator
+          set -euo pipefail
+          CURL="curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
 
-      - name: Move files to publish directory
+          $CURL -o refilterbeta.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/beta/ipsum.lst
+          $CURL -o antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
+          $CURL -o refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
+          $CURL -o refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
+          $CURL -o antifilternetwork.txt https://antifilter.network/download/ip.lst
+          $CURL -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
+          $CURL -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
+          $CURL -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
+
+          rm -rf geolite2
+          mkdir -p geolite2
+          $CURL "https://dl.netsyms.net/dbs/geolite2/GeoLite2-Country-CSV.zip" -o geolite2/GeoLite2-Country-CSV.zip
+          unzip -o geolite2/GeoLite2-Country-CSV.zip -d geolite2
+          mv geolite2/GeoLite2-Country-CSV_*/* geolite2/
+          rmdir geolite2/GeoLite2-Country-CSV_* || true
+
+      - name: Build geoip tool
+        working-directory: geoip
         run: |
-          mkdir publish
-          cp output/dat/*.dat publish
-          cp output/text/direct.txt publish
+          set -euo pipefail
+          go mod download
+          go build -o geoip
+
+            - name: Generate geoip artifacts
+        working-directory: geoip
+        run: |
+          set -euo pipefail
+
+          rm -rf output
+          mkdir -p output/dat output/text
+
+          ./geoip -c config-1-init.json
+
+          rm -f ./output/text/prepare.txt
+          : > ./output/text/prepare.txt
+
+          for f in ./output/text/ru.txt ./output/text/by.txt ./CUSTOM-LIST-ADD.txt; do
+            if [ -f "$f" ]; then
+              cat "$f" >> ./output/text/prepare.txt
+              printf '\n' >> ./output/text/prepare.txt
+            fi
+          done
+
+          test -s ./output/text/prepare.txt
+
+          python3 ipset_ops.py --mode diff \
+            --A ./output/text/prepare.txt \
+            --B ./refilterbeta.txt,./refilter.txt,./antifilternetwork.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt \
+            --out ./output/text/final.txt
+
+          ./geoip -c config-3-cut.json
+
+          ls -l output/dat/*.dat
+          test -s output/text/direct.txt
+
+      - name: Move files to publish directory (test-release layout)
+        if: github.ref_name != 'master'
+        run: |
+          set -euo pipefail
+          rm -rf publish
+          mkdir -p publish/text
+
+          cp geoip/output/dat/*.dat publish/
+
+          cp geoip/output/text/*.txt publish/text/
+
+      - name: Push artifacts to test-release branch
+        if: github.ref_name != 'master'
+        env:
+          BRANCH: test-release
+        run: |
+          set -euo pipefail
+
+          stash=/tmp/test-release-artifacts
+          rm -rf "$stash"
+          mkdir -p "$stash"
+          cp -a publish/. "$stash"/
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git reset --hard
+          git clean -fdx
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            git fetch --depth=1 origin "$BRANCH"
+            git switch -C "$BRANCH" "origin/$BRANCH"
+          else
+            git switch --orphan "$BRANCH"
+          fi
+
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          cp -a "$stash"/. .
+
+          git add -A
+          git commit -m "Publish $(date -u +%Y%m%d%H%M)" --allow-empty
+          git push origin HEAD:"$BRANCH"
+
+      - name: Move files to publish directory (release layout + archive text)
+        if: github.ref_name == 'master'
+        run: |
+          set -euo pipefail
+          rm -rf publish
+          mkdir -p publish/text
+
+          cp geoip/output/dat/*.dat publish/
+
+          cp geoip/output/text/*.txt publish/text/
+
+          tar -czf publish/text.tar.gz -C publish text
 
       - name: Git push assets to "release" branch
+        if: github.ref_name == 'master'
         run: |
           cd publish || exit 1
           git init
@@ -68,18 +199,24 @@ jobs:
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin release
 
-      - name: Purge jsdelivr CDN
+      - name: Purge jsdelivr CDN (including nested files)
+        if: github.ref_name == 'master'
         run: |
+          set -euo pipefail
           cd publish || exit 1
-          for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${file}"
+          find . -type f -print0 | while IFS= read -r -d '' f; do
+            rel="${f#./}"
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${rel}"
           done
 
       - name: Publish release
+        if: github.ref_name == 'master'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.DAILY_TAG }}
           name: ${{ env.DAILY_TAG }}
           prerelease: false
           draft: false
-          files: "publish/*"
+          files: |
+            publish/*.dat
+            publish/text.tar.gz
