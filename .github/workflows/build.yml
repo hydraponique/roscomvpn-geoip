@@ -185,7 +185,7 @@ jobs:
           for f in "$src"/*.txt; do
             bn="$(basename "$f")"
             base="${bn%.txt}"
-            dest="$out/geoip-${base}.mrs"
+            dest="$out/${base}.mrs"
             mihomo convert-ruleset ipcidr text "$f" "$dest"
           done
           shopt -u nullglob
@@ -205,7 +205,7 @@ jobs:
           for f in "$src"/*.txt; do
             bn="$(basename "$f")"
             base="${bn%.txt}"
-            dest="$out/geoip-${base}.srs"
+            dest="$out/${base}.srs"
 
             tmp_json="$(mktemp)"
 
