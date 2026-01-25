@@ -38,10 +38,6 @@ jobs:
           cache: true
           cache-dependency-path: geoip/go.sum
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
 
       - name: Overlay custom files over geoip
         run: |
@@ -55,7 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           DAILY_TAG=$(date +%Y%m%d%H%M)
-          echo "DAILY_TAG=$DAILY_TAG" >> $GITHUB_ENV
+          echo "DAILY_TAG=$DAILY_TAG" >> "$GITHUB_ENV"
 
       - name: Create Tag
         if: github.ref_name == 'master'
@@ -99,7 +95,7 @@ jobs:
           go mod download
           go build -o geoip
 
-            - name: Generate geoip artifacts
+      - name: Generate geoip artifacts
         working-directory: geoip
         run: |
           set -euo pipefail
@@ -137,9 +133,7 @@ jobs:
           set -euo pipefail
           rm -rf publish
           mkdir -p publish/text
-
           cp geoip/output/dat/*.dat publish/
-
           cp geoip/output/text/*.txt publish/text/
 
       - name: Push artifacts to test-release branch
@@ -179,11 +173,8 @@ jobs:
           set -euo pipefail
           rm -rf publish
           mkdir -p publish/text
-
           cp geoip/output/dat/*.dat publish/
-
           cp geoip/output/text/*.txt publish/text/
-
           tar -czf publish/text.tar.gz -C publish text
 
       - name: Git push assets to "release" branch
