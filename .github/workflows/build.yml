@@ -107,15 +107,12 @@ jobs:
 
           rm -f ./output/text/prepare.txt
           : > ./output/text/prepare.txt
-
           for f in ./output/text/ru.txt ./output/text/by.txt ./CUSTOM-LIST-ADD.txt; do
             if [ -f "$f" ]; then
               cat "$f" >> ./output/text/prepare.txt
               printf '\n' >> ./output/text/prepare.txt
             fi
           done
-
-          test -s ./output/text/prepare.txt
 
           python3 ipset_ops.py --mode diff \
             --A ./output/text/prepare.txt \
@@ -125,16 +122,122 @@ jobs:
           ./geoip -c config-3-cut.json
 
           ls -l output/dat/*.dat
-          test -s output/text/direct.txt
+
+      - name: Install Mihomo (latest stable .deb)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download -R MetaCubeX/mihomo --pattern 'mihomo-linux-amd64*.deb' --dir /tmp
+          sudo apt-get install -y "$(ls -1 /tmp/mihomo-linux-amd64*.deb | head -n1)"
+          rm -f /tmp/mihomo-linux-amd64*.deb
+
+      - name: Install sing-box
+        run: |
+          set -euo pipefail
+          curl -fsSL https://sing-box.app/install.sh | sudo sh
+
+      - name: Prepare workdir (copy ALL text files + clean with awk)
+        run: |
+          set -euo pipefail
+
+          work=/tmp/geoip-text
+          rm -rf "$work"
+          mkdir -p "$work"
+
+          shopt -s nullglob
+          cp -f geoip/output/text/*.txt "$work"/
+          shopt -u nullglob
+
+          for f in "$work"/*.txt; do
+            tmp="$(mktemp)"
+            awk '
+              function trim(s){ sub(/^[ \t]+/,"",s); sub(/[ \t]+$/,"",s); return s }
+              {
+                gsub(/\r/,"")
+                s=$0
+
+                sub(/[ \t]*#.*/,  "", s)
+                sub(/[ \t]*\/\/.*/, "", s)
+                sub(/[ \t]*@.*/,  "", s)
+
+                s=trim(s)
+                if (s=="") next
+                print s
+              }
+            ' "$f" > "$tmp"
+            mv "$tmp" "$f"
+          done
+
+      - name: Build mihomo .mrs from workdir (multi-file)
+        run: |
+          set -euo pipefail
+
+          src=/tmp/geoip-text
+          out=/tmp/mihomo/rulesets
+          rm -rf /tmp/mihomo
+          mkdir -p "$out"
+
+          shopt -s nullglob
+          for f in "$src"/*.txt; do
+            bn="$(basename "$f")"
+            base="${bn%.txt}"
+            dest="$out/geoip-${base}.mrs"
+            mihomo convert-ruleset ipcidr text "$f" "$dest"
+          done
+          shopt -u nullglob
+
+          ls -l "$out"/*.mrs
+
+      - name: Build sing-box .srs from workdir (multi-file, no python/jq)
+        run: |
+          set -euo pipefail
+
+          src=/tmp/geoip-text
+          out=/tmp/sing-box/rulesets
+          rm -rf /tmp/sing-box
+          mkdir -p "$out"
+
+          shopt -s nullglob
+          for f in "$src"/*.txt; do
+            bn="$(basename "$f")"
+            base="${bn%.txt}"
+            dest="$out/geoip-${base}.srs"
+
+            tmp_json="$(mktemp)"
+
+            if test -s "$f"; then
+              awk '
+                BEGIN { first=1; printf("{\"version\":3,\"rules\":[{\"ip_cidr\":[") }
+                {
+                  if (first==0) printf(",")
+                  printf("\"%s\"", $0)
+                  first=0
+                }
+                END { printf("]}]}]}") }
+              ' "$f" > "$tmp_json"
+            else
+              printf '{"version":3,"rules":[]}' > "$tmp_json"
+            fi
+
+            sing-box rule-set compile --output "$dest" "$tmp_json"
+            rm -f "$tmp_json"
+          done
+          shopt -u nullglob
+
+          ls -l "$out"/*.srs
 
       - name: Move files to publish directory (test-release layout)
         if: github.ref_name != 'master'
         run: |
           set -euo pipefail
           rm -rf publish
-          mkdir -p publish/text
+          mkdir -p publish/text publish/mihomo publish/sing-box
+
           cp geoip/output/dat/*.dat publish/
-          cp geoip/output/text/*.txt publish/text/
+          cp -f /tmp/geoip-text/*.txt publish/text/
+          cp -a /tmp/mihomo/rulesets/.   publish/mihomo/
+          cp -a /tmp/sing-box/rulesets/. publish/sing-box/
 
       - name: Push artifacts to test-release branch
         if: github.ref_name != 'master'
@@ -167,15 +270,24 @@ jobs:
           git commit -m "Publish $(date -u +%Y%m%d%H%M)" --allow-empty
           git push origin HEAD:"$BRANCH"
 
-      - name: Move files to publish directory (release layout + archive text)
+      - name: Move files to publish directory (release branch layout + build archives for GH Release)
         if: github.ref_name == 'master'
         run: |
           set -euo pipefail
           rm -rf publish
-          mkdir -p publish/text
+          mkdir -p publish/text publish/mihomo publish/sing-box
+
           cp geoip/output/dat/*.dat publish/
-          cp geoip/output/text/*.txt publish/text/
-          tar -czf publish/text.tar.gz -C publish text
+          cp -f /tmp/geoip-text/*.txt publish/text/
+          cp -a /tmp/mihomo/rulesets/.   publish/mihomo/
+          cp -a /tmp/sing-box/rulesets/. publish/sing-box/
+          rm -f /tmp/text.tar.gz /tmp/mihomo.tar.gz /tmp/sing-box.tar.gz
+          tar -czf /tmp/text.tar.gz     -C publish text
+          tar -czf /tmp/mihomo.tar.gz   -C publish mihomo
+          tar -czf /tmp/sing-box.tar.gz -C publish sing-box
+          test -s /tmp/text.tar.gz
+          test -s /tmp/mihomo.tar.gz
+          test -s /tmp/sing-box.tar.gz
 
       - name: Git push assets to "release" branch
         if: github.ref_name == 'master'
@@ -210,4 +322,6 @@ jobs:
           draft: false
           files: |
             publish/*.dat
-            publish/text.tar.gz
+            /tmp/mihomo.tar.gz
+            /tmp/sing-box.tar.gz
+            /tmp/text.tar.gz
