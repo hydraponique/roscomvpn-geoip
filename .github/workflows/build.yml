@@ -66,7 +66,7 @@ jobs:
               sha: context.sha
             })
 
-      - name: Download inputs (IP lists + GeoLite2)
+      - name: Download inputs (IP lists + Geobases)
         working-directory: geoip
         run: |
           set -euo pipefail
@@ -80,6 +80,9 @@ jobs:
           $CURL -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
           $CURL -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
           $CURL -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
+          
+          $CURL -o ipinfo_ru.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/ru.lst
+          $CURL -o ipinfo_by.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/by.lst
 
           rm -rf geolite2
           mkdir -p geolite2
@@ -109,7 +112,7 @@ jobs:
 
           rm -f ./tmp/text/prepare.txt
           : > ./tmp/text/prepare.txt
-          for f in ./tmp/text/ru.txt ./tmp/text/by.txt ./CUSTOM-LIST-ADD.txt; do
+          for f in ./tmp/text/ru.txt ./tmp/text/by.txt ./ipinfo_ru.lst ./ipinfo_by.lst ./CUSTOM-LIST-ADD.txt; do
             if [ -f "$f" ]; then
               cat "$f" >> ./tmp/text/prepare.txt
               printf '\n' >> ./tmp/text/prepare.txt
