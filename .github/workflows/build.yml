@@ -81,15 +81,12 @@ jobs:
           $CURL -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
           $CURL -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
           
+          $CURL -o geolite_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/ru.lst
+          $CURL -o geolite_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/by.lst
           $CURL -o ipinfo_ru.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/ru.lst
           $CURL -o ipinfo_by.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/by.lst
-
-          rm -rf geolite2
-          mkdir -p geolite2
-          $CURL "https://dl.netsyms.net/dbs/geolite2/GeoLite2-Country-CSV.zip" -o geolite2/GeoLite2-Country-CSV.zip
-          unzip -o geolite2/GeoLite2-Country-CSV.zip -d geolite2
-          mv geolite2/GeoLite2-Country-CSV_*/* geolite2/
-          rmdir geolite2/GeoLite2-Country-CSV_* || true
+          $CURL -o dbip_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/dbip-country-ipv4/ru.lst
+          $CURL -o dbip_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/dbip-country-ipv4/by.lst
 
       - name: Build geoip tool
         working-directory: geoip
@@ -106,13 +103,9 @@ jobs:
           rm -rf tmp output
           mkdir -p tmp/text output/dat output/text
 
-          ./geoip -c config-1-init.json
-
-          mv output/text/* tmp/text/
-
           rm -f ./tmp/text/prepare.txt
           : > ./tmp/text/prepare.txt
-          for f in ./tmp/text/ru.txt ./tmp/text/by.txt ./ipinfo_ru.lst ./ipinfo_by.lst ./CUSTOM-LIST-ADD.txt; do
+          for f in ./geolite_ru.lst ./geolite_by.lst ./ipinfo_ru.lst ./ipinfo_by.lst ./dbip_ru.lst ./dbip_by.lst ./CUSTOM-LIST-ADD.txt; do
             if [ -f "$f" ]; then
               cat "$f" >> ./tmp/text/prepare.txt
               printf '\n' >> ./tmp/text/prepare.txt
@@ -124,7 +117,7 @@ jobs:
             --B ./refilterbeta.txt,./refilter.txt,./antifilternetwork.txt,./antifilterdownloadcommunity.txt,./refiltercommunity.txt,./antifilternetworkcommunity.txt,./cdn.lst,./merged.sum,./CUSTOM-LIST-DEL.txt \
             --out ./tmp/text/final.txt
 
-          ./geoip -c config-2-cut.json
+          ./geoip -c config.json
 
           ls -l output/dat/*.dat
 

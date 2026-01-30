@@ -10,13 +10,17 @@
       }
     },
     {
-      "type": "text",
-      "action": "add",
-      "args": {
-        "name": "private",
-        "uri": "./tmp/text/private.txt"
+      "type": "private",
+      "action": "add"
+    },
+	{
+	  "type": "text",
+	  "action": "remove",
+	  "args": {
+	    "name": "private",
+	    "ipOrCIDR": ["0.0.0.0/8"]
       }
-    }
+	}
   ],
   "output": [
     {
