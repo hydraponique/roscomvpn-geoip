@@ -136,7 +136,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          curl -fsSL https://sing-box.app/install.sh | sudo -E sh
+          curl -fsSL https://sing-box.app/install.sh | sudo -E sh -s --version 1.12.12
 
       - name: Prepare workdir (copy ALL text files + clean with awk)
         run: |
