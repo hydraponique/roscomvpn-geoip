@@ -1,6 +1,8 @@
 name: Build geoip
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '10 3 * * *'
   push:
     branches:
       - test
