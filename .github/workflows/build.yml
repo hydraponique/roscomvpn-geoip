@@ -234,7 +234,6 @@ jobs:
           rm -rf release
           rm -rf /tmp/release
           mkdir -p release/text release/mihomo release/sing-box
-
           cp geoip/output/dat/*.dat release/
           cp -f /tmp/geoip-text/*.txt release/text/
           cp -a /tmp/mihomo/rulesets/.   release/mihomo/
@@ -268,7 +267,7 @@ jobs:
           git add release/
           git commit -m "Release ${{ env.DAILY_TAG }}" || echo "No changes to commit"
           git push origin master
-          
+
       - name: [MASTER] Purge CDN for release and updated master branches
         if: github.ref_name == 'master'
         run: |
@@ -301,7 +300,6 @@ jobs:
           rm -rf release
           rm -rf /tmp/release
           mkdir -p release/text release/mihomo release/sing-box
-
           cp geoip/output/dat/*.dat release/
           cp -f /tmp/geoip-text/*.txt release/text/
           cp -a /tmp/mihomo/rulesets/.   release/mihomo/
@@ -342,7 +340,7 @@ jobs:
             rel="${f#./}"
             curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test-release/${rel}"
           done
-            
+
       - name: [TEST] Prepare release directory
         if: github.ref_name == 'test'
         run: |
@@ -350,7 +348,6 @@ jobs:
           rm -rf release
           rm -rf /tmp/release
           mkdir -p release/text release/mihomo release/sing-box
-
           cp geoip/output/dat/*.dat release/
           cp -f /tmp/geoip-text/*.txt release/text/
           cp -a /tmp/mihomo/rulesets/.   release/mihomo/
@@ -376,7 +373,7 @@ jobs:
           git add release/
           git commit -m "Test Release $(date -u +%Y%m%d%H%M)" || echo "No changes to commit"
           git push origin test
-          
+
       - name: [TEST] Purge CDN for test-release and updated test branches
         if: github.ref_name == 'test'
         run: |
