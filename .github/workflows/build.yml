@@ -250,6 +250,14 @@ jobs:
           test -s /tmp/sing-box.tar.gz
           cp -r release /tmp/release
 
+      - name: Generate checksum for geoip.dat
+        if: github.ref_name == 'master'
+        uses: jmgilman/actions-generate-checksum@v1
+        with:
+          patterns: |
+            /tmp/release/geoip.dat
+          output: checksum
+
       - name: MASTER Push to release branch and update master
         if: github.ref_name == 'master'
         run: |
@@ -311,6 +319,14 @@ jobs:
           cp -a /tmp/sing-box/rulesets/. release/sing-box/
           cp -r release /tmp/release
 
+      - name: Generate checksum for geoip.dat
+        if: github.ref_name == 'test'
+        uses: jmgilman/actions-generate-checksum@v1
+        with:
+          patterns: |
+            /tmp/release/geoip.dat
+          output: checksum
+
       - name: TEST Push to test-release branch & update test branch
         if: github.ref_name == 'test'
         run: |
@@ -352,9 +368,3 @@ jobs:
           repository: hydraponique/roscomvpn-routing
           event-type: update-routing-configs
           
-      - name: Generate checksum for geoip.dat
-        uses: jmgilman/actions-generate-checksum@v1
-        with:
-          patterns: |
-            release/geoip.dat
-          output: checksum
