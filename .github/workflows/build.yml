@@ -254,9 +254,8 @@ jobs:
         if: github.ref_name == 'master'
         uses: jmgilman/actions-generate-checksum@v1
         with:
-          patterns: |
-            /tmp/release/geoip.dat
-          output: checksum
+          patterns: /tmp/release/geoip.dat
+          output: /tmp/release/geoip.dat.sha256
 
       - name: MASTER Push to release branch and update master
         if: github.ref_name == 'master'
@@ -323,9 +322,8 @@ jobs:
         if: github.ref_name == 'test'
         uses: jmgilman/actions-generate-checksum@v1
         with:
-          patterns: |
-            /tmp/release/geoip.dat
-          output: checksum
+          patterns: /tmp/release/geoip.dat
+          output: /tmp/release/geoip.dat.sha256
 
       - name: TEST Push to test-release branch & update test branch
         if: github.ref_name == 'test'
