@@ -295,6 +295,7 @@ jobs:
           draft: false
           files: |
             release/*.dat
+            release/*.dat.sha256
             /tmp/mihomo.tar.gz
             /tmp/sing-box.tar.gz
             /tmp/text.tar.gz
