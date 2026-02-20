@@ -249,13 +249,7 @@ jobs:
           test -s /tmp/mihomo.tar.gz
           test -s /tmp/sing-box.tar.gz
           cp -r release /tmp/release
-
-      - name: Generate checksum for geoip.dat
-        if: github.ref_name == 'master'
-        uses: jmgilman/actions-generate-checksum@v1
-        with:
-          patterns: /tmp/release/geoip.dat
-          output: /tmp/release/geoip.dat.sha256
+          sha256sum /tmp/release/geoip.dat > /tmp/release/geoip.dat.sha256
 
       - name: MASTER Push to release branch and update master
         if: github.ref_name == 'master'
@@ -317,13 +311,7 @@ jobs:
           cp -a /tmp/mihomo/rulesets/.   release/mihomo/
           cp -a /tmp/sing-box/rulesets/. release/sing-box/
           cp -r release /tmp/release
-
-      - name: Generate checksum for geoip.dat
-        if: github.ref_name == 'test'
-        uses: jmgilman/actions-generate-checksum@v1
-        with:
-          patterns: /tmp/release/geoip.dat
-          output: /tmp/release/geoip.dat.sha256
+          sha256sum /tmp/release/geoip.dat > /tmp/release/geoip.dat.sha256
 
       - name: TEST Push to test-release branch & update test branch
         if: github.ref_name == 'test'
