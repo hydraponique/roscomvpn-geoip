@@ -248,8 +248,8 @@ jobs:
           test -s /tmp/text.tar.gz
           test -s /tmp/mihomo.tar.gz
           test -s /tmp/sing-box.tar.gz
+          sha256sum /release/geoip.dat > /release/geoip.dat.sha256
           cp -r release /tmp/release
-          sha256sum /tmp/release/geoip.dat > /tmp/release/geoip.dat.sha256
 
       - name: MASTER Push to release branch and update master
         if: github.ref_name == 'master'
@@ -310,8 +310,8 @@ jobs:
           cp -f /tmp/geoip-text/*.txt release/text/
           cp -a /tmp/mihomo/rulesets/.   release/mihomo/
           cp -a /tmp/sing-box/rulesets/. release/sing-box/
+          sha256sum /release/geoip.dat > /release/geoip.dat.sha256
           cp -r release /tmp/release
-          sha256sum /tmp/release/geoip.dat > /tmp/release/geoip.dat.sha256
 
       - name: TEST Push to test-release branch & update test branch
         if: github.ref_name == 'test'
