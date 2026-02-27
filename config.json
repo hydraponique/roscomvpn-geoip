@@ -18,7 +18,7 @@
 	  "action": "remove",
 	  "args": {
 	    "name": "private",
-	    "ipOrCIDR": ["0.0.0.0/8"]
+	    "ipOrCIDR": ["0.0.0.0/8", "::/128"]
       }
 	}
   ],
