@@ -20,7 +20,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
+    env:
+      CURL: "curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v6
@@ -73,21 +74,20 @@ jobs:
         working-directory: geoip
         run: |
           set -euo pipefail
-          CURL="curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
-          $CURL -o whitelist.txt https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/refs/heads/main/cidrwhitelist.txt
-          $CURL -o antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
-          $CURL -o refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
-          $CURL -o refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
-          $CURL -o antifilternetwork.txt https://antifilter.network/download/ip.lst
-          $CURL -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
-          $CURL -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
-          $CURL -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
-          $CURL -o geolite_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/ru.lst
-          $CURL -o geolite_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/by.lst
-          $CURL -o ipinfo_ru.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/ru.lst
-          $CURL -o ipinfo_by.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/by.lst
-          $CURL -o dbip_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/dbip-country-ipv4/ru.lst
-          $CURL -o dbip_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/dbip-country-ipv4/by.lst
+          ${{ env.CURL_VERBOSE }} -o whitelist.txt https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/refs/heads/main/cidrwhitelist.txt
+          ${{ env.CURL_VERBOSE }} -o antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
+          ${{ env.CURL_VERBOSE }} -o refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
+          ${{ env.CURL_VERBOSE }} -o refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
+          ${{ env.CURL_VERBOSE }} -o antifilternetwork.txt https://antifilter.network/download/ip.lst
+          ${{ env.CURL_VERBOSE }} -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
+          ${{ env.CURL_VERBOSE }} -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
+          ${{ env.CURL_VERBOSE }} -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
+          ${{ env.CURL_VERBOSE }} -o geolite_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/ru.lst
+          ${{ env.CURL_VERBOSE }} -o geolite_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/by.lst
+          ${{ env.CURL_VERBOSE }} -o ipinfo_ru.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/ru.lst
+          ${{ env.CURL_VERBOSE }} -o ipinfo_by.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/by.lst
+          ${{ env.CURL_VERBOSE }} -o dbip_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/dbip-country-ipv4/ru.lst
+          ${{ env.CURL_VERBOSE }} -o dbip_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/dbip-country-ipv4/by.lst
 
       - name: Build geoip tool
         working-directory: geoip
@@ -137,8 +137,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          CURL="curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
-          $CURL https://sing-box.app/install.sh | sudo -E sh -s -- --version 1.12.12
+          ${{ env.CURL_VERBOSE }} https://sing-box.app/install.sh | sudo -E sh -s -- --version 1.12.12
 
       - name: Prepare workdir (copy ALL text files + clean with awk)
         run: |
@@ -288,14 +287,13 @@ jobs:
         if: github.ref_name == 'master'
         run: |
           set -euo pipefail
-          CURL="curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
           cd release || exit 1
           find . -type f -print0 | while IFS= read -r -d '' f; do
             rel="${f#./}"
-            $CURL -i "https://purge.jsdelivr.net/gh/${{ github.repository }}/release/${rel}"
-            $CURL -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@master/release/${rel}"
-            $CURL -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${rel}"
-            $CURL -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@${{ env.DAILY_TAG }}/release/${rel}"
+            ${{ env.CURL_VERBOSE }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}/release/${rel}"
+            ${{ env.CURL_VERBOSE }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@master/release/${rel}"
+            ${{ env.CURL_VERBOSE }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${rel}"
+            ${{ env.CURL_VERBOSE }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@${{ env.DAILY_TAG }}/release/${rel}"
           done
 
       - name: TEST Prepare release directory
@@ -334,12 +332,11 @@ jobs:
         if: github.ref_name == 'test'
         run: |
           set -euo pipefail
-          CURL="curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
           cd release || exit 1
           find . -type f -print0 | while IFS= read -r -d '' f; do
             rel="${f#./}"
-            $CURL -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test/release/${rel}"
-            $CURL -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test-release/${rel}"
+            ${{ env.CURL_VERBOSE }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test/release/${rel}"
+            ${{ env.CURL_VERBOSE }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test-release/${rel}"
           done
 
       - name: Trigger routing update
