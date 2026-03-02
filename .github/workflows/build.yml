@@ -288,7 +288,7 @@ jobs:
         run: |
           set -euo pipefail
           cd release || exit 1
-          find . -type f -print0 | while IFS= read -r -d '' f; do
+          find . -type f -not -path "./.git/*" -print0 | while IFS= read -r -d '' f; do
             rel="${f#./}"
             ${{ env.CURL }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}/release/${rel}"
             ${{ env.CURL }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@master/release/${rel}"
@@ -333,7 +333,7 @@ jobs:
         run: |
           set -euo pipefail
           cd release || exit 1
-          find . -type f -print0 | while IFS= read -r -d '' f; do
+          find . -type f -not -path "./.git/*" -print0 | while IFS= read -r -d '' f; do
             rel="${f#./}"
             ${{ env.CURL }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test/release/${rel}"
             ${{ env.CURL }} -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@test-release/${rel}"
