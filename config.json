@@ -10,6 +10,15 @@
       }
     },
     {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "whitelist",
+        "uri": "./whitelist.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
       "type": "private",
       "action": "add"
     },
