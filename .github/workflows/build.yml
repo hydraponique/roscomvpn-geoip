@@ -74,9 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           CURL="curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused"
-
           $CURL -o whitelist.txt https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/refs/heads/main/cidrwhitelist.txt
-
           $CURL -o antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
           $CURL -o refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
           $CURL -o refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
@@ -84,7 +82,6 @@ jobs:
           $CURL -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
           $CURL -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
           $CURL -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
-
           $CURL -o geolite_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/ru.lst
           $CURL -o geolite_by.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/by.lst
           $CURL -o ipinfo_ru.lst https://raw.githubusercontent.com/Davoyan/ipinfo/refs/heads/main/geo/geoip/ru.lst
