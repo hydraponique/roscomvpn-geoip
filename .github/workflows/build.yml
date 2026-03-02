@@ -285,7 +285,7 @@ jobs:
             /tmp/mihomo.tar.gz
             /tmp/sing-box.tar.gz
             /tmp/text.tar.gz
-            
+
      - name: MASTER Purge CDN for release and updated master branches
         if: github.ref_name == 'master'
         run: |
