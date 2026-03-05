@@ -74,7 +74,7 @@ jobs:
         working-directory: geoip
         run: |
           set -euo pipefail
-          ${{ env.CURL }} -o whitelist.txt https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/refs/heads/main/cidrwhitelist.txt
+          ${{ env.CURL }} -o whitelist.txt https://raw.githubusercontent.com/escapingworm/russia-whitelist/refs/heads/main/ru-whitelist-cidr.txt
           ${{ env.CURL }} -o antifilterdownloadcommunity.txt https://community.antifilter.download/list/community.lst
           ${{ env.CURL }} -o refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
           ${{ env.CURL }} -o refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
