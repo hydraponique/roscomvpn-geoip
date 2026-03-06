@@ -5,6 +5,15 @@
       "action": "add",
       "args": {
         "name": "direct",
+        "uri": "./whitelist.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
         "uri": "./tmp/text/final.txt",
         "onlyIPType": "ipv4"
       }
