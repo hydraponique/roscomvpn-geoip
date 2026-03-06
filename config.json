@@ -19,6 +19,15 @@
       }
     },
     {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "whitelist",
+        "uri": "./CUSTOM-WHITELIST.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
       "type": "private",
       "action": "add"
     },
