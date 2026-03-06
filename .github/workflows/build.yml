@@ -106,7 +106,7 @@ jobs:
 
           rm -f ./tmp/text/prepare.txt
           : > ./tmp/text/prepare.txt
-          for f in ./geolite_ru.lst ./geolite_by.lst ./ipinfo_ru.lst ./ipinfo_by.lst ./dbip_ru.lst ./dbip_by.lst ./CUSTOM-LIST-ADD.txt ./whitelist.txt ./CUSTOM-WHITELIST.txt; do
+          for f in ./geolite_ru.lst ./geolite_by.lst ./ipinfo_ru.lst ./ipinfo_by.lst ./dbip_ru.lst ./dbip_by.lst ./CUSTOM-LIST-ADD.txt ./CUSTOM-WHITELIST.txt; do
             if [ -f "$f" ]; then
               cat "$f" >> ./tmp/text/prepare.txt
               printf '\n' >> ./tmp/text/prepare.txt
