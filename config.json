@@ -5,7 +5,7 @@
       "action": "add",
       "args": {
         "name": "direct",
-        "uri": "./whitelist.txt",
+        "uri": "./geolite_ru.lst",
         "onlyIPType": "ipv4"
       }
     },
@@ -14,8 +14,123 @@
       "action": "add",
       "args": {
         "name": "direct",
-        "uri": "./tmp/text/final.txt",
+        "uri": "./geolite_by.lst",
         "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./ipinfo_ru.lst",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./ipinfo_by.lst",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./dbip_ru.lst",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./dbip_by.lst",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "direct",
+        "uri": "./CUSTOM-LIST-ADD.txt"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./refilter.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./antifilternetwork.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./antifilterdownloadcommunity.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./refiltercommunity.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./antifilternetworkcommunity.txt",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./cdn.lst",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./merged.sum",
+        "onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "direct",
+        "uri": "./CUSTOM-LIST-DEL.txt"
       }
     },
     {
@@ -32,22 +147,21 @@
       "action": "add",
       "args": {
         "name": "whitelist",
-        "uri": "./CUSTOM-WHITELIST.txt",
-        "onlyIPType": "ipv4"
+        "uri": "./CUSTOM-WHITELIST.txt"
       }
     },
     {
       "type": "private",
       "action": "add"
     },
-	{
-	  "type": "text",
-	  "action": "remove",
-	  "args": {
-	    "name": "private",
-	    "ipOrCIDR": ["0.0.0.0/8", "::/128"]
+    {
+      "type": "text",
+      "action": "remove",
+      "args": {
+        "name": "private",
+        "ipOrCIDR": ["0.0.0.0/8", "::/128"]
       }
-	}
+    }
   ],
   "output": [
     {
