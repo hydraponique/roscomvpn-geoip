@@ -105,14 +105,16 @@ jobs:
           ls -l output/dat/*.dat
 
       - name: Install Mihomo (latest stable .deb)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          gh release download -R MetaCubeX/mihomo --pattern 'mihomo-linux-amd64*.deb' --dir /tmp
-          sudo apt-get install -y "$(ls -1 /tmp/mihomo-linux-amd64*.deb | head -n1)"
-          rm -f /tmp/mihomo-linux-amd64*.deb
+          ARCH=$(dpkg --print-architecture)
+          LATEST_URL=$(${{ env.CURL }} https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+            | grep -oP '"browser_download_url":\s*"\K[^"]*mihomo-linux-'"$ARCH"'-[^"]*\.deb(?=")' \
+            | head -n1)
+          echo "Downloading: $LATEST_URL"
+          ${{ env.CURL }} -o /tmp/mihomo.deb "$LATEST_URL"
+          sudo dpkg -i /tmp/mihomo.deb || sudo apt-get install -f -y
+          rm -f /tmp/mihomo.deb
 
       - name: Install sing-box
         env:
