@@ -12,7 +12,6 @@
 - GeoLite2 + IPinfo + DB-IP — три независимые геобазы всех RU/BY CIDR-диапазонов (IPv4)
 - Кастомный список CIDR — VK Company/Mail.Ru, Yandex, CDNVideo (Билайн), включая зарубежные активы
 - Apple Push Notifications — решение проблем с доставкой пушей на iOS
-- Категория private — приватные адреса, всегда идут в директ
 
 **Исключено (DIFF):**
 - Re:filter + Antifilter.Network — списки РКН для разблокировки забаненного сегмента
