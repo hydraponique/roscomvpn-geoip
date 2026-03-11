@@ -1,41 +1,34 @@
-# RoscomVPN GeoIP
+<div align="center">
 
-Генерирует актуальный `geoip.dat` и рулсеты для Mihomo/sing-box с "хирургической" фильтрацией всех нужных CIDR РФ/РБ.
+# 🌎 RoscomVPN GeoIP
 
-Три категории: **direct** (маршрутизация напрямую), **whitelist** (белый список), **private** (приватные адреса).
+| [**⬤ GeoIP**](https://github.com/hydraponique/roscomvpn-geoip) | [GeoSite](https://github.com/hydraponique/roscomvpn-geosite) | [Routing](https://github.com/hydraponique/roscomvpn-routing) |
+|:---:|:---:|:---:|
+| ![GeoIP](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geoip/badge) | ![GeoSite](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geosite/badge) | ![Routing](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-routing/badge) |
 
----
+**Генерирует актуальный `geoip.dat` и рулсеты для Mihomo/sing-box**
+**с "хирургической" фильтрацией всех нужных CIDR РФ/РБ**
 
-## Из чего состоит `geoip:direct`
+Три категории: `direct` · `whitelist` · `private`
 
-**Добавлено (ADD):**
-- GeoLite2 + IPinfo + DB-IP — три независимые геобазы всех RU/BY CIDR-диапазонов (IPv4)
-- Кастомный список CIDR — VK Company/Mail.Ru, Yandex, CDNVideo (Билайн), включая зарубежные активы
-- Apple Push Notifications — решение проблем с доставкой пушей на iOS
-
-**Исключено (DIFF):**
-- Re:filter + Antifilter.Network — списки РКН для разблокировки забаненного сегмента
-- Community-списки — Re:filter + Antifilter.Network + Antifilter.Download (проблемные сервисы: 4pda, CloudFlare и др.)
-- Зарубежные CDN + Hetzner — резолвинг из множества геобаз + оф. информация CDN-провайдеров
-- `0.0.0.0/8` из private — предотвращение утечки DNS на некоторых устройствах
-
-## `geoip:whitelist`
-
-- [russia-whitelist](https://github.com/escapingworm/russia-whitelist) — белый список, CIDR
-- Кастомный CUSTOM-WHITELIST.txt — IP-диапазоны, которые собраны вручную
+</div>
 
 ---
 
-## Форматы и скачивание
+## 📥 Форматы и скачивание
 
-### geoip.dat (V2Ray/Xray)
+<details open>
+<summary><b>geoip.dat (V2Ray/Xray)</b></summary>
 
 | Источник | Ссылка |
 |----------|--------|
-| GitHub Releases | https://github.com/hydraponique/roscomvpn-geoip/releases/latest/download/geoip.dat |
-| jsDelivr CDN | `https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/geoip.dat` |
+| 🔗 GitHub Releases | https://github.com/hydraponique/roscomvpn-geoip/releases/latest/download/geoip.dat |
+| ⚡ jsDelivr CDN | `https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/geoip.dat` |
 
-### Текстовый формат (CIDR-списки)
+</details>
+
+<details>
+<summary><b>📄 Текстовый формат (CIDR-списки)</b></summary>
 
 | Файл | Описание |
 |------|----------|
@@ -43,7 +36,10 @@
 | `release/text/whitelist.txt` | ~4 000+ CIDR белого списка, обязательная категория |
 | `release/text/private.txt` | Приватные адреса |
 
-### Mihomo (.mrs рулсеты)
+</details>
+
+<details>
+<summary><b>🔶 Mihomo (.mrs рулсеты)</b></summary>
 
 | Файл | CDN |
 |------|-----|
@@ -51,7 +47,10 @@
 | `whitelist.mrs` | `https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/mihomo/whitelist.mrs` |
 | `private.mrs` | `https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/mihomo/private.mrs` |
 
-### sing-box (.srs рулсеты)
+</details>
+
+<details>
+<summary><b>🟣 sing-box (.srs рулсеты)</b></summary>
 
 | Файл | CDN |
 |------|-----|
@@ -59,15 +58,33 @@
 | `whitelist.srs` | `https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/sing-box/whitelist.srs` |
 | `private.srs` | `https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/sing-box/private.srs` |
 
----
-
-## Обновления
-
-Файлы обновляются **ежедневно в 03:10 UTC** и **при любом изменении в репозитории**.
+</details>
 
 ---
 
-## Использование с Xray/V2Ray
+## 🧬 Из чего состоит `geoip:direct`
+
+> [!TIP]
+> **Добавлено (ADD):**
+> - GeoLite2 + IPinfo + DB-IP — три независимые геобазы всех RU/BY CIDR-диапазонов (IPv4)
+> - Кастомный список CIDR — VK Company/Mail.Ru, Yandex, CDNVideo (Билайн), включая зарубежные активы
+> - Apple Push Notifications — решение проблем с доставкой пушей на iOS
+
+> [!WARNING]
+> **Исключено (DIFF):**
+> - Re:filter + Antifilter.Network — списки РКН для разблокировки забаненного сегмента
+> - Community-списки — Re:filter + Antifilter.Network + Antifilter.Download (проблемные сервисы: 4pda, CloudFlare и др.)
+> - Зарубежные CDN + Hetzner — резолвинг из множества геобаз + оф. информация CDN-провайдеров
+> - `0.0.0.0/8` из private — предотвращение утечки DNS на некоторых устройствах
+
+## 🛡 `geoip:whitelist`
+
+- [russia-whitelist](https://github.com/escapingworm/russia-whitelist) — белый список, CIDR
+- Кастомный CUSTOM-WHITELIST.txt — IP-диапазоны, которые собраны вручную
+
+---
+
+## 🛠 Использование с Xray/V2Ray
 
 ```json
 {
@@ -83,7 +100,18 @@
 }
 ```
 
-## Источники данных
+---
+
+## 📅 Обновления
+
+> Файлы обновляются **ежедневно в 03:10 UTC** и **при любом изменении в репозитории**
+
+---
+
+## 📊 Источники данных
+
+<details open>
+<summary><b>Геобазы и списки</b></summary>
 
 | Источник | Что дает |
 |----------|----------|
@@ -97,12 +125,18 @@
 | [cdn-ip-database](https://github.com/mansourjabin/cdn-ip-database) | Парсинг оф. данных CIDR зарубежных CDN |
 | [russia-whitelist](https://github.com/escapingworm/russia-whitelist) | Белый список CIDR |
 
-## Связанные проекты
+</details>
+
+---
+
+## 🔗 Связанные проекты
 
 - [roscomvpn-geosite](https://github.com/hydraponique/roscomvpn-geosite) — доменные списки
 - [roscomvpn-routing](https://github.com/hydraponique/roscomvpn-routing) — готовые конфиги роутинга
 
 ---
+
+<div align="center">
 
 > **Ставь ⭐** и не пропусти регулярные обновления для поддержания актуальности списков и оптимальной производительности
 
@@ -110,3 +144,5 @@
 
 ##### Спасибо Всем за поддержку!
 ###### Сделано с ❤️ к свободному интернету!
+
+</div>
