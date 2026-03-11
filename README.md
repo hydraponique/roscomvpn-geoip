@@ -1,10 +1,10 @@
+| [**🌎 GeoIP**](https://github.com/hydraponique/roscomvpn-geoip) | [GeoSite](https://github.com/hydraponique/roscomvpn-geosite) | [Routing](https://github.com/hydraponique/roscomvpn-routing) |
+|:---:|:---:|:---:|
+| ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-geoip/total.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-geoip.svg) | ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-geosite/total.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-geosite.svg) | ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-routing/total.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-routing.svg) |
+
 <div align="center">
 
 # 🌎 RoscomVPN GeoIP
-
-| [**⬤ GeoIP**](https://github.com/hydraponique/roscomvpn-geoip) | [GeoSite](https://github.com/hydraponique/roscomvpn-geosite) | [Routing](https://github.com/hydraponique/roscomvpn-routing) |
-|:---:|:---:|:---:|
-| ![GeoIP](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geoip/badge) | ![GeoSite](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geosite/badge) | ![Routing](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-routing/badge) |
 
 **Генерирует актуальный `geoip.dat` и рулсеты для Mihomo/sing-box**
 **с "хирургической" фильтрацией всех нужных CIDR РФ/РБ**
