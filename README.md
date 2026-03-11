@@ -2,8 +2,7 @@
 
 | [**🌎 GeoIP**](https://github.com/hydraponique/roscomvpn-geoip) | [GeoSite](https://github.com/hydraponique/roscomvpn-geosite) | [Routing](https://github.com/hydraponique/roscomvpn-routing) |
 |:---:|:---:|:---:|
-| ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-geoip/total.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-geoip.svg) | ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-geosite/total.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-geosite.svg) | ![Happ](https://img.shields.io/badge/Happ-blue.svg) ![Mihomo](https://img.shields.io/badge/Mihomo-grey.svg) ![Incy](https://img.shields.io/badge/Incy-green.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-routing.svg) |
-| ![jsDelivr](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geoip/badge) | ![jsDelivr](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geosite/badge) | ![jsDelivr](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-routing/badge) |
+| ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-geoip/total.svg) ![jsDelivr](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geoip/badge) | ![Downloads](https://img.shields.io/github/downloads/hydraponique/roscomvpn-geosite/total.svg) ![jsDelivr](https://data.jsdelivr.com/v1/package/gh/hydraponique/roscomvpn-geosite/badge) | ![Happ](https://img.shields.io/badge/Happ-blue.svg) ![Mihomo](https://img.shields.io/badge/Mihomo-grey.svg) ![Incy](https://img.shields.io/badge/Incy-darkgreen.svg) ![Stars](https://img.shields.io/github/stars/hydraponique/roscomvpn-routing.svg) |
 
 # 🌎 RoscomVPN GeoIP
 
