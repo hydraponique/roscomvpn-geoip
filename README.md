@@ -3,7 +3,7 @@
 <table width="100%">
 <tr>
 <td align="center"><a href="https://github.com/hydraponique/roscomvpn-geoip"><b>🌎 RoscomVPN GeoIP</b></a></td>
-<td align="center"><a href="https://github.com/hydraponique/roscomvpn-geosite">RoscomVPN GeoSite</a></td>
+<td align="center"><a href="https://github.com/hydraponique/roscomvpn-geosite">RoscomVPN Geosite</a></td>
 <td align="center"><a href="https://github.com/hydraponique/roscomvpn-routing">RoscomVPN Routing</a></td>
 </tr>
 <tr>
