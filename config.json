@@ -174,6 +174,14 @@
     {
       "type": "text",
       "action": "output"
+    },
+    {
+      "type": "mihomoMRS",
+      "action": "output"
+    },
+    {
+      "type": "singboxSRS",
+      "action": "output"
     }
   ]
 }
