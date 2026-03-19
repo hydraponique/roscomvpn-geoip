@@ -228,7 +228,19 @@
             "AS24940",
             "AS212317",
             "AS213230",
-            "AS215859",
+            "AS215859"
+          ]
+        }
+      }
+    },
+    {
+      "type": "maxmindGeoLite2ASNCSV",
+      "action": "remove",
+      "args": {
+        "ipv4": "./geolite2/GeoLite2-ASN-Blocks-IPv4.csv",
+        "ipv6": "./geolite2/GeoLite2-ASN-Blocks-IPv6.csv",
+        "wantedList": {
+          "direct": [
             "AS48158",
             "AS47328"
           ]
