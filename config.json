@@ -55,6 +55,34 @@
       }
     },
     {
+      "type": "maxmindGeoLite2ASNCSV",
+      "action": "add",
+      "args": {
+        "wantedList": ["AS47764", "AS199295", "AS207970", "AS21051", "AS47542", "AS60863", "AS47541", "AS62243", "AS49988", "AS57973", "AS207581", "AS213235", "AS28709", "AS201817", "AS49797", "AS60476", "AS211963", "AS61178", "AS205830"]
+      }
+    },
+    {
+      "type": "maxmindGeoLite2ASNCSV",
+      "action": "add",
+      "args": {
+        "wantedList": ["AS13238", "AS44534", "AS207304", "AS210656", "AS202611", "AS207207", "AS200350", "AS215013", "AS208398", "AS212066", "AS215024", "AS208795", "AS210560", "AS214415", "AS211318", "AS213291", "AS401712", "AS200632", "AS53428", "AS49714", "AS215109", "AS213952"]
+      }
+    },
+    {
+      "type": "maxmindGeoLite2ASNCSV",
+      "action": "add",
+      "args": {
+        "wantedList": ["AS57363","AS204720"]
+      }
+    },
+    {
+      "type": "maxmindGeoLite2ASNCSV",
+      "action": "add",
+      "args": {
+        "wantedList": ["AS206980"]
+      }
+    },
+    {
       "type": "text",
       "action": "add",
       "args": {
@@ -126,11 +154,17 @@
       }
     },
     {
-      "type": "text",
+      "type": "maxmindGeoLite2ASNCSV",
       "action": "remove",
       "args": {
-        "name": "direct",
-        "uri": "./CUSTOM-LIST-DEL.txt"
+        "wantedList": ["AS24940", "AS212317", "AS213230", "AS215859"]
+      }
+    },
+    {
+      "type": "maxmindGeoLite2ASNCSV",
+      "action": "remove",
+      "args": {
+        "wantedList": ["AS48158", "AS47328"]
       }
     },
     {
