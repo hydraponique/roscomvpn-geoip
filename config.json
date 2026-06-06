@@ -195,15 +195,6 @@
       "action": "remove",
       "args": {
         "name": "direct",
-        "uri": "./antifilternetworkcommunity.txt",
-        "onlyIPType": "ipv4"
-      }
-    },
-    {
-      "type": "text",
-      "action": "remove",
-      "args": {
-        "name": "direct",
         "uri": "./cdn.lst",
         "onlyIPType": "ipv4"
       }
