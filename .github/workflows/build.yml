@@ -79,7 +79,7 @@ jobs:
           ${{ env.CURL }} -o refilter.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst
           ${{ env.CURL }} -o refiltercommunity.txt https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/community_ips.lst
           ${{ env.CURL }} -o antifilternetwork.txt https://antifilter.network/download/ip.lst
-          ${{ env.CURL }} -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
+          #${{ env.CURL }} -o antifilternetworkcommunity.txt https://antifilter.network/downloads/custom.lst
           ${{ env.CURL }} -o cdn.lst https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/refs/heads/main/data/cdn.lst
           ${{ env.CURL }} -o merged.sum https://raw.githubusercontent.com/PentiumB/CDN-RuleSet/refs/heads/main/release/merged.sum
           ${{ env.CURL }} -o geolite_ru.lst https://raw.githubusercontent.com/hydraponique/countrydb/refs/heads/main/output/geolite2-geo-whois-asn-country-ipv4/ru.lst
