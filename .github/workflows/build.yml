@@ -59,7 +59,7 @@ jobs:
 
       - name: Create Tag
         if: github.ref_name == 'master'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { DAILY_TAG } = process.env
@@ -148,7 +148,7 @@ jobs:
 
       - name: MASTER Publish GitHub Release
         if: github.ref_name == 'master'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ env.DAILY_TAG }}
           name: ${{ env.DAILY_TAG }}
@@ -219,7 +219,7 @@ jobs:
 
       - name: Trigger routing update
         if: success() && github.ref_name == 'master'
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.PAT_FOR_ROUTING }}
           repository: hydraponique/roscomvpn-routing
